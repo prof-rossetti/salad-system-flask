@@ -32,3 +32,5 @@ Run local web server, and visit http://localhost:5000/ in a browser.
 ```` sh
 python hello.py
 ````
+
+[License](LICENCE)
