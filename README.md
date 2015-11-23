@@ -24,7 +24,7 @@ mysql -uroot -p salad_db < schema.sql
 Install package dependencies.
 
 ```` sh
-pip install Flask
+pip install -r requirements.txt
 ````
 
 Run local web server, and visit http://localhost:5000/ in a browser.
