@@ -18,7 +18,7 @@ Setup database (requires mysql).
 
 ```` sh
 mysql -uroot -p -e "DROP DATABASE IF EXISTS salad_db; CREATE DATABASE salad_db;"
-mysql -uroot -p salad_db < setup.sql
+mysql -uroot -p salad_db < schema.sql
 ````
 
 Install package dependencies.
