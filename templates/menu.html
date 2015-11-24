@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <ul class=menu_items>
+  {% for menu_item in menu_items %}
+    <li><h2>{{ menu_item.title }}</h2>{{ menu_item.description }}
+  {% else %}
+    <li><em>Please add items to the menu.</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
