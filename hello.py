@@ -35,7 +35,17 @@ def hello():
 def menu_items():
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from menu_items ORDER BY id LIMIT 10;")
-    menu_items = [dict(title=row[2], description=row[6]) for row in cursor.fetchall()]
+    menu_items = [
+        dict(
+            id= row[0],
+            category=row[1],
+            title=row[2],
+            calories=row[3],
+            gluten_free=row[4],
+            vegan_safe=row[5],
+            description=row[6]
+        ) for row in cursor.fetchall()
+    ]
     return render_template('menu-items/index.html', menu_items=menu_items)
 
 @app.route("/form")

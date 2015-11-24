@@ -1,12 +1,33 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<ul class=menu_items>
-  {% for menu_item in menu_items %}
-    <li><h2>{{ menu_item.title }}</h2>{{ menu_item.description }}
-  {% else %}
-    <li><em>Please add items to the menu.</em>
-  {% endfor %}
-</ul>
+<h1>Menu</h1>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>category</th>
+        <th>title</th>
+        <th>vegan_safe</th>
+        <th>gluten_free</th>
+        <th>description</th>
+      </tr>
+    </thead>
+    <tbody id="menu-item-table-body">
+      {% for menu_item in menu_items %}
+        <tr>
+          <td>{{ menu_item.id }}</td>
+          <td>{{ menu_item.category }}</td>
+          <td>{{ menu_item.title }}</td>
+          <td>{{ menu_item.vegan_safe }}</td>
+          <td>{{ menu_item.gluten_free }}</td>
+          <td>{{ menu_item.description }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

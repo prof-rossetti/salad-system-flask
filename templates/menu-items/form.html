@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
 
+<h1>Add a new Menu Item</h1>
+
 <form id="submission-form" action="{{ url_for('new_menu_item') }}" method="post" class="form-horizontal">
   <div class="form-group">
     <label for="category" class="col-sm-2 control-label">Category:</label>
