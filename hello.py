@@ -1,5 +1,5 @@
 
-import code # to debug: `code.interact(local=locals())`
+import code # to debug: `code.interact(local=locals())` or `code.interact(local=dict(globals(), **locals()))`
 import os
 from flask import Flask, render_template, request, session, g, redirect, url_for, abort, flash
 from flaskext.mysql import MySQL # https://github.com/cyberdelia/flask-mysql
@@ -54,25 +54,34 @@ def edit_menu_item():
 
 @app.route("/new", methods=['POST'])
 def new_menu_item():
+    category = request.form['category']
+    title = request.form['title']
+    calories = request.form['calories']
+    description = request.form['description']
 
-    #category = request.form['category']
-    #title = request.form['title']
-    #calories = request.form['calories']
-    #description = request.form['description']
-    #try:
-    #    gluten_free = True if form['gluten_free'] else False
-    #except KeyError as e:
-    #    gluten_free = False
-    #try:
-    #    vegan_safe = True if form['vegan_safe'] else False
-    #except KeyError as e:
-    #    vegan_safe = False
-    #calories = int(calories)
-    #gluten_free = int(gluten_free)
-    #vegan_safe = int(vegan_safe)
+    try:
+        gluten_free = True if request.form['gluten_free'] else False
+    except KeyError as e:
+        gluten_free = False
 
-    #cursor = mysql.connect().cursor()
-    #cursor.execute("SELECT * from menu_items ORDER BY id LIMIT 10;")
+    try:
+        vegan_safe = True if request.form['vegan_safe'] else False
+    except KeyError as e:
+        vegan_safe = False
+
+    calories = int(calories) # this will throw an error if calories is null/blank/empty... todo: validations
+    gluten_free = int(gluten_free)
+    vegan_safe = int(vegan_safe)
+
+    cursor = mysql.connect().cursor()
+    #cursor.execute("INSERT INTO `menu_items` (`category`,`title`,`calories`,`gluten_free`,`vegan_safe`,`description`) VALUES (?, ?, ?, ?, ?, ?)", [category, title, calories, gluten_free, vegan_safe, description]  )
+
+
+    sql = "INSERT INTO `menu_items` (`category`,`title`,`calories`,`gluten_free`,`vegan_safe`,`description`) VALUES (%s, %s, %s, %s, %s, %s)"
+    cursor.execute(sql, ('SignatureSalad', 'TEST SALAD',  1111, 0, 1,  'a salad to use when testing the web application.')  )
+
+    #code.interact(local=dict(globals(), **locals()))
+
 
     flash('Thanks for adding a menu item.')
     return redirect(url_for('menu_items'))
@@ -93,5 +102,5 @@ def new_menu_item():
 
 
 if __name__ == "__main__":
-    app.debug = True
+    #app.debug = True
     app.run()
