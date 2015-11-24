@@ -18,19 +18,21 @@ Setup database (requires mysql).
 
 ```` sh
 mysql -uroot -p -e "DROP DATABASE IF EXISTS salad_db; CREATE DATABASE salad_db;"
-mysql -uroot -p salad_db < database/schema.sql
+mysql -uroot -p salad_db < schema.sql
 ````
 
 Install package dependencies.
 
 ```` sh
-pip install -r software/requirements.txt
+pip install -r requirements.txt
 ````
 
 Run local web server, and visit http://localhost:5000/ in a browser.
 
 ```` sh
-python software/hello.py
+python hello.py
 ````
 
-[License](LICENCE)
+![a screenshot depicting a menu page with an alert message at the top which reads: 'thanks for adding a menu item'](static/images/menu-screenshot.png)
+
+## [License](LICENCE)
