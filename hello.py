@@ -34,7 +34,7 @@ def hello():
 @app.route("/menu")
 def menu_items():
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from menu_items ORDER BY id LIMIT 10;")
+    cursor.execute("SELECT * from menu_items ORDER BY id DESC LIMIT 10;")
     menu_items = [
         dict(
             id= row[0],
@@ -54,34 +54,44 @@ def edit_menu_item():
 
 @app.route("/new", methods=['POST'])
 def new_menu_item():
+
+    # CAPTURE, VALIDATE, AND TRANSFORM FORM DATA
+
     category = request.form['category']
     title = request.form['title']
-    calories = request.form['calories']
     description = request.form['description']
+
+    try:
+        calories = request.form['calories']
+        calories = int(calories)
+    except ValueError as e:
+        #calories = None
+        flash('Please specify number of calories.') # A VALIDATION!
+        return redirect(url_for('edit_menu_item')) #todo: retain previous form input values instead of resetting the form state
 
     try:
         gluten_free = True if request.form['gluten_free'] else False
     except KeyError as e:
         gluten_free = False
+    finally:
+        gluten_free = int(gluten_free)
 
     try:
         vegan_safe = True if request.form['vegan_safe'] else False
     except KeyError as e:
         vegan_safe = False
+    finally:
+        vegan_safe = int(vegan_safe)
 
-    calories = int(calories) # this will throw an error if calories is null/blank/empty... todo: validations
-    gluten_free = int(gluten_free)
-    vegan_safe = int(vegan_safe)
+    # CREATE NEW RECORD
 
-    cursor = mysql.connect().cursor()
-    #cursor.execute("INSERT INTO `menu_items` (`category`,`title`,`calories`,`gluten_free`,`vegan_safe`,`description`) VALUES (?, ?, ?, ?, ?, ?)", [category, title, calories, gluten_free, vegan_safe, description]  )
-
-
+    connection = mysql.connect()
+    cursor = connection.cursor()
     sql = "INSERT INTO `menu_items` (`category`,`title`,`calories`,`gluten_free`,`vegan_safe`,`description`) VALUES (%s, %s, %s, %s, %s, %s)"
-    cursor.execute(sql, ('SignatureSalad', 'TEST SALAD',  1111, 0, 1,  'a salad to use when testing the web application.')  )
+    cursor.execute(sql, (category, title, calories, gluten_free, vegan_safe, description))
+    connection.commit()
 
-    #code.interact(local=dict(globals(), **locals()))
-
+    # REDIRECT WITH AN ALERT MESSAGE
 
     flash('Thanks for adding a menu item.')
     return redirect(url_for('menu_items'))
@@ -92,15 +102,6 @@ def new_menu_item():
 
 
 
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
-    #app.debug = True
+    app.debug = True
     app.run()
