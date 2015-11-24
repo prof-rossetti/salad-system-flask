@@ -2,11 +2,14 @@
 <title>Salad System (Flask)</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
-  <h1>Salad System</h1>
 
   {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
   {% endfor %}
-  
+
+  <a href="/">Urban Lunch Company</a> |
+  <a href='/menu'>View Menu</a> |
+  <a href='/form'>Add Menu Item</a>
+
   {% block body %}{% endblock %}
 </div>
